@@ -54,6 +54,8 @@ namespace CvEv6.API
                 cfg.CreateMap<Entities.Title, Models.TitleDto>();
                 cfg.CreateMap<Models.DomainForCreationDto, Entities.Domain>();
                 cfg.CreateMap<Models.TitleForCreationDto, Entities.Title>();
+                cfg.CreateMap<Models.MainBodyForCreationDto, Entities.MainBody>();
+                cfg.CreateMap<Entities.MainBody, Models.MainBodyDto>();
             });
 
             app.UseStatusCodePages();

@@ -81,28 +81,31 @@ namespace CvEv6.API.Controllers
             }, CreatedTitleToReturn);
         }
 
-        [HttpDelete("/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteTitle(int id)
         {
-            var title = _cvERepository.GetTitle(id);
-            if (title == null || title.Name == "")
+
+            if (!_cvERepository.TitleEntityExists(id))
             {
-                return BadRequest();
+                return NotFound();
+            }
+            var titleEntity = _cvERepository.GetTitle(id);
+
+
+            if (titleEntity == null)
+            {
+                return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            _cvERepository.DeleteTitleEntity(titleEntity);
+
+
+            if (!_cvERepository.Save())
             {
-                return BadRequest(ModelState);
+                return StatusCode(500, "A problem occured while handling your request");
             }
 
-            if (_cvERepository.TitleEntityExists(title.Name))
-            {
-                return StatusCode(400, "Title already exists");
-            }
-
-            _cvERepository.DeleteTitleEntity(title);
-
-            return null;
+            return NoContent();
 
         }
     }

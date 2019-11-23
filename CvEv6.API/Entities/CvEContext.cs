@@ -17,5 +17,6 @@ namespace CvEv6.API.Entities
         public DbSet<Domain> Domains { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Title> Titles { get; set; }
+        public DbSet<MainBody> MainBody { get; set; }
     }
 }

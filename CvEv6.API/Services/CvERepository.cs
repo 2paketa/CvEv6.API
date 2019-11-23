@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CvEv6.API.Entities;
+using CvEv6.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CvEv6.API.Services
@@ -19,14 +20,19 @@ namespace CvEv6.API.Services
             return _context.Domains.Any(d => d.Id == domainId);
         }
 
-        public bool TitleEntityExists(string name)
-        {
-            return _context.Titles.Any(d => d.Name == name);
-        }
-
         public bool domainEntityExists(string name)
         {
             return _context.Domains.Any(d => d.Name == name);
+        }
+
+        public bool TitleEntityExists(int titleId)
+        {
+            return _context.Titles.Any(t => t.Id == titleId);
+        }
+
+        public bool TitleEntityExists(string name)
+        {
+            return _context.Titles.Any(t => t.Name == name);
         }
 
         public Domain GetDomainEntity(int domainId, bool includeDocuments)
@@ -106,6 +112,32 @@ namespace CvEv6.API.Services
                 documents.Remove(doc);
             }
             _context.Domains.Remove(domainEntity);
+        }
+
+        public IEnumerable<MainBody> GetMainBodyEntities()
+        {
+            return _context.MainBody.OrderBy(m => m.Name);
+        }
+
+        public bool MainBodyExists(string name)
+        {
+            return _context.Documents.Any(d => d.Name == name);
+        }
+
+        public void AddMainBodyEntity(MainBody mainbody)
+        {
+            _context.MainBody.Add(mainbody);
+        }
+
+        public object GetMainBodyEntity(int id)
+        {
+            return _context.MainBody
+                .Where(d => d.Id == id).FirstOrDefault();
+        }
+
+        public bool MainBodyExists(int id)
+        {
+            return _context.Documents.Any(d => d.Id == id);
         }
     }
 }

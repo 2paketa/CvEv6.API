@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Cors;
 
 namespace CvEv6.API
 {
@@ -20,14 +21,16 @@ namespace CvEv6.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();           
             services.AddMvc();
-
+           
             var connectionString = Startup.Configuration["connectionString:CvEv6DB2ConnectionString"];
             services.AddDbContext<CvEContext>(o => o.UseSqlServer(connectionString));
             services.AddScoped<ICvERepository, CvERepository>();
@@ -40,6 +43,10 @@ namespace CvEv6.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(
+                options => options.WithOrigins("http://localhost:8080").AllowAnyMethod()
+            );
 
             cvEContext.EnsureSeedDataForContext();
 
@@ -61,6 +68,7 @@ namespace CvEv6.API
             app.UseStatusCodePages();
 
             app.UseMvc();
+
 
             app.Run(async (context) =>
             {

@@ -25,6 +25,7 @@ namespace CvEv6.API.Services
             return _context.Domains.Any(d => d.Name == name);
         }
 
+
         public bool TitleEntityExists(int titleId)
         {
             return _context.Titles.Any(t => t.Id == titleId);
